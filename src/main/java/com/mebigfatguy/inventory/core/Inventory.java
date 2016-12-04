@@ -68,11 +68,15 @@ public class Inventory implements AutoCloseable {
             throw new InventoryException("Unrecognized archive type: " + archive);
         }
 
+        InventoryRecorder recorder = new InventoryRecorder();
         try {
+            addInventoryEventListener(recorder);
             scanner.scan(archive.getName(), this);
         } catch (IOException e) {
             getEventFirer().fireFailure(e.getMessage());
             throw new InventoryException("Failed to read archive completely", e);
+        } finally {
+            removeInventoryEventListener(recorder);
         }
     }
 
@@ -93,6 +97,42 @@ public class Inventory implements AutoCloseable {
 
     public InventoryEventFirer getEventFirer() {
         return new InventoryEventFirer(listeners);
+    }
+
+    class InventoryRecorder implements InventoryEventListener {
+
+        @Override
+        public void scanningWar(String warName) {
+        }
+
+        @Override
+        public void scanningJar(String jarName) {
+        }
+
+        @Override
+        public void scanningFile(String fileName) {
+        }
+
+        @Override
+        public void jarRecorded(String jarName) {
+        }
+
+        @Override
+        public void packageRecorded(String packageName) {
+        }
+
+        @Override
+        public void jarUsed(String jarName, String byFile) {
+        }
+
+        @Override
+        public void packageUsed(String packageName, String byFile) {
+        }
+
+        @Override
+        public void failure(String info) {
+        }
+
     }
 
 }
