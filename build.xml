@@ -1,0 +1,75 @@
+<project name="inventory" default="jar" basedir=".">
+	<property file="user.properties" />
+    <property file="build.properties" />
+    <property file="version.properties" />
+	
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="target.dir" value="${basedir}/target"/>
+	<property name="classes.dir" value="${target.dir}/classes" />
+    <property name="lib.dir" value="${basedir}/lib" />
+	<property name="javac.source" value="1.8" />
+	<property name="javac.target" value="1.8" />
+	<property name="javac.deprecation" value="on" />
+	<property name="javac.debug" value="on" />
+	<property name="proxy.server" value="" />
+	<property name="inventory.version" value="0.1.0" />
+	
+	<path id="inventory.classpath">
+        <pathelement location="${classes.dir}"/>
+		<pathelement location="${lib.dir}/ant-${ant_.version}.jar"/>
+		<pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
+ 	</path>
+        	
+    <target name="info">
+        <echo message="inventory - a tool to find why or why not jars are included in an ear/war"/>
+        <echo message=""/>
+        <echo message="    this project uses yank (https://github.com/mebigfatguy/yank) for dependency management"/>
+        <echo message="    download yank.jar and place in ant/lib directory"/>
+        <echo message="    http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.mebigfatguy.yank%22"/>
+    </target>
+
+	<target name="yank" unless="no.yank" xmlns:yank="antlib:com.mebigfatguy.yank">
+		<mkdir dir="${lib.dir}"/>
+		<yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" proxyServer="${proxy.server}" source="true" separateClassifierTypes="true">
+			<server url="http://repo1.maven.org/maven2"/>
+			<generateVersions propertyFileName="${basedir}/version.properties" />
+		</yank:yank>
+	</target>
+	
+	<target name="init" depends="yank">
+		<mkdir dir="${classes.dir}"/>
+	</target>
+		
+	<target name="clean">
+		<delete dir="${target.dir}"/>
+	</target>
+		
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="${javac.source}" target="${javac.target}" deprecation="${javac.deprecation}" debug="${javac.debug}" includeantruntime="false">
+			<classpath refid="inventory.classpath" />
+		</javac>
+	</target>
+	
+	<target name="jar" depends="init,compile">
+		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
+			<fileset dir="${classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+			<manifest>
+				<attribute name="inventory-version" value="${inventory.version}" />
+				<attribute name="Application-Name" value="inventory" />
+				<attribute name="Permissions" value="all-permissions" />
+				<attribute name="Codebase" value="*" />
+				<attribute name="Bundle-ManifestVersion" value="2" />
+				<attribute name="Bundle-Name" value="inventory" />
+				<attribute name="Bundle-SymbolicName" value="inventory; singleton:=true" />
+				<attribute name="Bundle-Version" value="${inventory.version}" />
+				<attribute name="Bundle-ClassPath" value="." />
+				<attribute name="Bundle-Vendor" value="Inventory Project" />
+				<attribute name="Bundle-ActivationPolicy" value="lazy" />
+				<attribute name="Export-Package" value="com.mebigfatguy.inventory" />
+				<attribute name="Import-Package" value="org.slf4j" />
+			</manifest>
+		</jar>
+	</target>
+</project>
