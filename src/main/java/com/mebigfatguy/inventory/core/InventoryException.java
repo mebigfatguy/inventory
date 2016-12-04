@@ -17,18 +17,15 @@
  */
 package com.mebigfatguy.inventory.core;
 
-public interface InventoryEventListener {
+public class InventoryException extends Exception {
 
-    void jarRecorded(String jarName);
+    private static final long serialVersionUID = 4151924629348862982L;
 
-    void packageRecorded(String packageName);
+    public InventoryException(String message) {
+        super(message);
+    }
 
-    void scanningFile(String fileName);
-
-    void jarUsed(String jarName, String byFile);
-
-    void packageUsed(String packageName, String byFile);
-
-    void failure(String info);
-
+    public InventoryException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

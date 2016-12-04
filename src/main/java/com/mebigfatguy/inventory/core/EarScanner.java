@@ -17,18 +17,9 @@
  */
 package com.mebigfatguy.inventory.core;
 
-public interface InventoryEventListener {
+public class EarScanner implements ArchiveScanner {
 
-    void jarRecorded(String jarName);
-
-    void packageRecorded(String packageName);
-
-    void scanningFile(String fileName);
-
-    void jarUsed(String jarName, String byFile);
-
-    void packageUsed(String packageName, String byFile);
-
-    void failure(String info);
-
+    @Override
+    public void scan(Inventory inventory) {
+    }
 }

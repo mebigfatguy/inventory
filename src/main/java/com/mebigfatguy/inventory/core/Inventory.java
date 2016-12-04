@@ -39,7 +39,19 @@ public class Inventory {
         listeners.remove(listener);
     }
 
-    public void takeInventory() {
+    public void takeInventory() throws InventoryException {
+
+        ArchiveScanner scanner;
+
+        if (archive.getName().endsWith(".ear")) {
+            scanner = new EarScanner();
+        } else if (archive.getName().endsWith(".war")) {
+            scanner = new WarScanner();
+        } else {
+            throw new InventoryException("Unrecognized archive type: " + archive);
+        }
+
+        scanner.scan(this);
     }
 
 }

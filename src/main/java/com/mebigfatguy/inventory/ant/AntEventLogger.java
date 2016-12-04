@@ -53,4 +53,9 @@ public class AntEventLogger implements InventoryEventListener {
     public void packageUsed(String packageName, String byFile) {
         project.log(packageName + "package used by: " + byFile);
     }
+
+    @Override
+    public void failure(String info) {
+        project.log("ERROR: " + info, Project.MSG_ERR);
+    }
 }

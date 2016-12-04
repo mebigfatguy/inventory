@@ -17,18 +17,7 @@
  */
 package com.mebigfatguy.inventory.core;
 
-public interface InventoryEventListener {
+public interface ArchiveScanner {
 
-    void jarRecorded(String jarName);
-
-    void packageRecorded(String packageName);
-
-    void scanningFile(String fileName);
-
-    void jarUsed(String jarName, String byFile);
-
-    void packageUsed(String packageName, String byFile);
-
-    void failure(String info);
-
+    void scan(Inventory inventory);
 }
