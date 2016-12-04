@@ -26,36 +26,33 @@ import com.mebigfatguy.inventory.utils.LengthLimitedInputStream;
 public class EarScanner implements ArchiveScanner {
 
     @Override
-    public void scan(Inventory inventory) throws IOException {
-
+    public void scan(String name, Inventory inventory) throws IOException {
+        inventory.getEventFirer().fireScanningWar(name);
         try (ZipInputStream zis = new ZipInputStream(inventory.getStream())) {
             ZipEntry entry = zis.getNextEntry();
             while (entry != null) {
-                String name = entry.getName();
-                if (name.endsWith(".war")) {
-                    inventory.getEventFirer().fireScanningWar(name);
+                String fileName = entry.getName();
+                if (fileName.endsWith(".war")) {
                     try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
                         WarScanner scanner = new WarScanner();
                         inventory.setStream(is);
-                        scanner.scan(inventory);
+                        scanner.scan(fileName, inventory);
                     } finally {
                         inventory.resetStream();
                     }
-                } else if (name.endsWith(".jar")) {
-                    inventory.getEventFirer().fireScanningJar(name);
+                } else if (fileName.endsWith(".jar")) {
                     try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
                         JarScanner scanner = new JarScanner();
                         inventory.setStream(is);
-                        scanner.scan(inventory);
+                        scanner.scan(fileName, inventory);
                     } finally {
                         inventory.resetStream();
                     }
                 } else {
-                    inventory.getEventFirer().fireScanningFile(name);
                     try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
                         FileScanner scanner = new FileScanner();
                         inventory.setStream(is);
-                        scanner.scan(inventory);
+                        scanner.scan(fileName, inventory);
                     } finally {
                         inventory.resetStream();
                     }

@@ -21,5 +21,5 @@ import java.io.IOException;
 
 public interface ArchiveScanner {
 
-    void scan(Inventory inventory) throws IOException;
+    void scan(String name, Inventory inventory) throws IOException;
 }

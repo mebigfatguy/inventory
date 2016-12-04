@@ -26,16 +26,16 @@ import com.mebigfatguy.inventory.utils.LengthLimitedInputStream;
 public class JarScanner implements ArchiveScanner {
 
     @Override
-    public void scan(Inventory inventory) throws IOException {
+    public void scan(String name, Inventory inventory) throws IOException {
+        inventory.getEventFirer().fireScanningJar(name);
         try (ZipInputStream zis = new ZipInputStream(inventory.getStream())) {
             ZipEntry entry = zis.getNextEntry();
             while (entry != null) {
-                String name = entry.getName();
-                inventory.getEventFirer().fireScanningFile(name);
+                String fileName = entry.getName();
                 try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
                     FileScanner scanner = new FileScanner();
                     inventory.setStream(is);
-                    scanner.scan(inventory);
+                    scanner.scan(fileName, inventory);
                 } finally {
                     inventory.resetStream();
                 }

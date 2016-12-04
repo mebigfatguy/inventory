@@ -18,11 +18,29 @@
 package com.mebigfatguy.inventory.core;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class FileScanner implements ArchiveScanner {
 
     @Override
-    public void scan(Inventory inventory) throws IOException {
+    public void scan(String name, Inventory inventory) throws IOException {
+        inventory.getEventFirer().fireScanningFile(name);
+        String extension = getExtension(name);
 
+        switch (extension) {
+            case "class":
+            break;
+
+            case "xml":
+            break;
+        }
+    }
+
+    private String getExtension(String name) {
+        int dotPos = name.lastIndexOf(".");
+        if (dotPos < 0) {
+            return "";
+        }
+        return name.substring(dotPos + 1).toLowerCase(Locale.ENGLISH);
     }
 }
