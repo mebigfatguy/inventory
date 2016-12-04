@@ -15,37 +15,31 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.mebigfatguy.inventory.ant;
+package com.mebigfatguy.inventory.core;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
-import org.apache.tools.ant.BuildException;
-import org.apache.tools.ant.Task;
-
-import com.mebigfatguy.inventory.core.Inventory;
-
-public class InventoryTask extends Task {
+public class Inventory {
 
     private File archive;
+    private Set<InventoryEventListener> listeners;
 
-    public void setEar(File earFile) {
-        archive = earFile;
+    public Inventory(File archive) {
+        this.archive = archive;
+        listeners = new HashSet<>();
     }
 
-    public void setWar(File warFile) {
-        archive = warFile;
+    public void addInventoryEventListener(InventoryEventListener listener) {
+        listeners.add(listener);
     }
 
-    @Override
-    public void execute() {
-
-        if ((archive == null) || !archive.isFile()) {
-            throw new BuildException("Property 'ear' or 'war' was not set or was invalid");
-        }
-
-        Inventory inventory = new Inventory(archive);
-        inventory.addInventoryEventListener(new AntEventLogger(getProject()));
-
-        inventory.takeInventory();
+    public void removeInventoryEventListener(InventoryEventListener listener) {
+        listeners.remove(listener);
     }
+
+    public void takeInventory() {
+    }
+
 }
