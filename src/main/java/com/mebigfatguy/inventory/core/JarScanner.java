@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import com.mebigfatguy.inventory.utils.LengthLimitedInputStream;
 import com.mebigfatguy.inventory.utils.NonClosingZipInputStream;
 
 public class JarScanner implements ArchiveScanner {
@@ -32,6 +33,13 @@ public class JarScanner implements ArchiveScanner {
             while (entry != null) {
                 String name = entry.getName();
                 inventory.getEventFirer().fireScanningFile(name);
+                try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
+                    FileScanner scanner = new FileScanner();
+                    inventory.setStream(is);
+                    scanner.scan(inventory);
+                } finally {
+                    inventory.resetStream();
+                }
                 entry = zis.getNextEntry();
             }
         }

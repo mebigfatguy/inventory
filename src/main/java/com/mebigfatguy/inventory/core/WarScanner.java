@@ -41,6 +41,15 @@ public class WarScanner implements ArchiveScanner {
                     } finally {
                         inventory.resetStream();
                     }
+                } else {
+                    inventory.getEventFirer().fireScanningFile(name);
+                    try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
+                        FileScanner scanner = new FileScanner();
+                        inventory.setStream(is);
+                        scanner.scan(inventory);
+                    } finally {
+                        inventory.resetStream();
+                    }
                 }
                 entry = zis.getNextEntry();
             }
