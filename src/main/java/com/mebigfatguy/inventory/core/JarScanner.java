@@ -22,13 +22,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import com.mebigfatguy.inventory.utils.LengthLimitedInputStream;
-import com.mebigfatguy.inventory.utils.NonClosingZipInputStream;
 
 public class JarScanner implements ArchiveScanner {
 
     @Override
     public void scan(Inventory inventory) throws IOException {
-        try (ZipInputStream zis = new NonClosingZipInputStream(inventory.getStream())) {
+        try (ZipInputStream zis = new ZipInputStream(inventory.getStream())) {
             ZipEntry entry = zis.getNextEntry();
             while (entry != null) {
                 String name = entry.getName();

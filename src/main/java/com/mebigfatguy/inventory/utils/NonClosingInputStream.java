@@ -17,12 +17,12 @@
  */
 package com.mebigfatguy.inventory.utils;
 
+import java.io.FilterInputStream;
 import java.io.InputStream;
-import java.util.zip.ZipInputStream;
 
-public class NonClosingZipInputStream extends ZipInputStream {
+public class NonClosingInputStream extends FilterInputStream {
 
-    public NonClosingZipInputStream(InputStream is) {
+    public NonClosingInputStream(InputStream is) {
         super(is);
     }
 

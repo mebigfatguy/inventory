@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mebigfatguy.inventory.utils.NonClosingInputStream;
+
 public class Inventory implements AutoCloseable {
 
     private File archive;
@@ -76,9 +78,9 @@ public class Inventory implements AutoCloseable {
 
     public InputStream getStream() {
         if (overrideStream != null) {
-            return overrideStream;
+            return new NonClosingInputStream(overrideStream);
         }
-        return stream;
+        return new NonClosingInputStream(stream);
     }
 
     public void setStream(InputStream stream) {
