@@ -35,6 +35,16 @@ public class AntEventLogger implements InventoryEventListener {
     }
 
     @Override
+    public void scanningJar(String jarName) {
+        project.log("Scanning Jar: " + jarName);
+    }
+
+    @Override
+    public void scanningFile(String fileName) {
+        project.log("Scanning File: " + fileName);
+    }
+
+    @Override
     public void jarRecorded(String jarName) {
         project.log("Recorded Jar: " + jarName);
     }
@@ -42,11 +52,6 @@ public class AntEventLogger implements InventoryEventListener {
     @Override
     public void packageRecorded(String packageName) {
         project.log("Recorded Package: " + packageName);
-    }
-
-    @Override
-    public void scanningFile(String fileName) {
-        project.log("Scanning File: " + fileName);
     }
 
     @Override

@@ -28,14 +28,14 @@ import java.util.Set;
 public class Inventory implements AutoCloseable {
 
     private File archive;
+    private Set<InventoryEventListener> listeners;
     private InputStream stream;
     private InputStream overrideStream;
-    private Set<InventoryEventListener> listeners;
 
     public Inventory(File archive) throws IOException {
         this.archive = archive;
-        listeners = new HashSet<>();
         stream = new BufferedInputStream(new FileInputStream(archive));
+        listeners = new HashSet<>();
     }
 
     @Override
@@ -69,6 +69,7 @@ public class Inventory implements AutoCloseable {
         try {
             scanner.scan(this);
         } catch (IOException e) {
+            getEventFirer().fireFailure(e.getMessage());
             throw new InventoryException("Failed to read archive completely", e);
         }
     }
@@ -86,6 +87,10 @@ public class Inventory implements AutoCloseable {
 
     public void resetStream() {
         overrideStream = null;
+    }
+
+    public InventoryEventFirer getEventFirer() {
+        return new InventoryEventFirer(listeners);
     }
 
 }

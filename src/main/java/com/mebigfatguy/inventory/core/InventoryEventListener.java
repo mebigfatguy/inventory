@@ -21,11 +21,13 @@ public interface InventoryEventListener {
 
     void scanningWar(String warName);
 
+    void scanningJar(String jarName);
+
+    void scanningFile(String fileName);
+
     void jarRecorded(String jarName);
 
     void packageRecorded(String packageName);
-
-    void scanningFile(String fileName);
 
     void jarUsed(String jarName, String byFile);
 
