@@ -15,11 +15,18 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.mebigfatguy.inventory.core;
+package com.mebigfatguy.inventory.utils;
 
-import java.io.IOException;
+import java.io.InputStream;
+import java.util.zip.ZipInputStream;
 
-public interface ArchiveScanner {
+public class NonClosingZipInputStream extends ZipInputStream {
 
-    void scan(Inventory inventory) throws IOException;
+    public NonClosingZipInputStream(InputStream is) {
+        super(is);
+    }
+
+    @Override
+    public void close() {
+    }
 }

@@ -29,6 +29,7 @@ public class Inventory implements AutoCloseable {
 
     private File archive;
     private InputStream stream;
+    private InputStream overrideStream;
     private Set<InventoryEventListener> listeners;
 
     public Inventory(File archive) throws IOException {
@@ -65,11 +66,26 @@ public class Inventory implements AutoCloseable {
             throw new InventoryException("Unrecognized archive type: " + archive);
         }
 
-        scanner.scan(this);
+        try {
+            scanner.scan(this);
+        } catch (IOException e) {
+            throw new InventoryException("Failed to read archive completely", e);
+        }
     }
 
     public InputStream getStream() {
+        if (overrideStream != null) {
+            return overrideStream;
+        }
         return stream;
+    }
+
+    public void setStream(InputStream stream) {
+        overrideStream = stream;
+    }
+
+    public void resetStream() {
+        overrideStream = null;
     }
 
 }

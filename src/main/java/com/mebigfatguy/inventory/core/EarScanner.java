@@ -17,9 +17,33 @@
  */
 package com.mebigfatguy.inventory.core;
 
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
+import com.mebigfatguy.inventory.utils.LengthLimitedInputStream;
+import com.mebigfatguy.inventory.utils.NonClosingZipInputStream;
+
 public class EarScanner implements ArchiveScanner {
 
     @Override
-    public void scan(Inventory inventory) {
+    public void scan(Inventory inventory) throws IOException {
+
+        try (ZipInputStream zis = new NonClosingZipInputStream(inventory.getStream())) {
+            ZipEntry entry = zis.getNextEntry();
+            while (entry != null) {
+                String name = entry.getName();
+                if (name.endsWith(".jar")) {
+                    try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
+                        WarScanner scanner = new WarScanner();
+                        inventory.setStream(is);
+                        scan(inventory);
+                    } finally {
+                        inventory.resetStream();
+                    }
+                }
+                entry = zis.getNextEntry();
+            }
+        }
     }
 }

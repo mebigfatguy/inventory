@@ -19,6 +19,8 @@ package com.mebigfatguy.inventory.core;
 
 public interface InventoryEventListener {
 
+    void scanningWar(String warName);
+
     void jarRecorded(String jarName);
 
     void packageRecorded(String packageName);
