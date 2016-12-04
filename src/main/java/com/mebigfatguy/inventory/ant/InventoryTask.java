@@ -43,9 +43,8 @@ public class InventoryTask extends Task {
             throw new BuildException("Property 'ear' or 'war' was not set or was invalid");
         }
 
-        try {
+        try (Inventory inventory = new Inventory(archive)) {
 
-            Inventory inventory = new Inventory(archive);
             inventory.addInventoryEventListener(new AntEventLogger(getProject()));
 
             inventory.takeInventory();

@@ -17,18 +17,32 @@
  */
 package com.mebigfatguy.inventory.core;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Inventory {
+public class Inventory implements AutoCloseable {
 
     private File archive;
+    private InputStream stream;
     private Set<InventoryEventListener> listeners;
 
-    public Inventory(File archive) {
+    public Inventory(File archive) throws IOException {
         this.archive = archive;
         listeners = new HashSet<>();
+        stream = new BufferedInputStream(new FileInputStream(archive));
+    }
+
+    @Override
+    public void close() {
+        try {
+            stream.close();
+        } catch (IOException e) {
+        }
     }
 
     public void addInventoryEventListener(InventoryEventListener listener) {
@@ -52,6 +66,10 @@ public class Inventory {
         }
 
         scanner.scan(this);
+    }
+
+    public InputStream getStream() {
+        return stream;
     }
 
 }
