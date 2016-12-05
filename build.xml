@@ -3,9 +3,11 @@
     <property file="build.properties" />
     <property file="version.properties" />
 	
-	<property name="src.dir" value="${basedir}/src" />
+	<property name="src.dir" value="${basedir}/src/main/java" />
+	<property name="test.dir" value="${basedir}/src/test/java" />
 	<property name="target.dir" value="${basedir}/target"/>
 	<property name="classes.dir" value="${target.dir}/classes" />
+	<property name="test-classes.dir" value="${target.dir}/test-classes" />
     <property name="lib.dir" value="${basedir}/lib" />
 	<property name="javac.source" value="1.8" />
 	<property name="javac.target" value="1.8" />
@@ -18,6 +20,11 @@
         <pathelement location="${classes.dir}"/>
 		<pathelement location="${lib.dir}/ant-${ant_.version}.jar"/>
 		<pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
+ 	</path>
+        	
+	<path id="inventory.test.classpath">
+        <pathelement location="${test-classes.dir}"/>
+		<pathelement location="${lib.dir}/junit-${junit.version}.jar"/>
  	</path>
         	
     <target name="info">
@@ -38,6 +45,7 @@
 	
 	<target name="init" depends="yank">
 		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${test-classes.dir}"/>
 	</target>
 		
 	<target name="clean">
@@ -50,7 +58,14 @@
 		</javac>
 	</target>
 	
-	<target name="jar" depends="init,compile">
+	<target name="compile-test" depends="init, compile">
+		<javac srcdir="${test.dir}" destdir="${test-classes.dir}" source="${javac.source}" target="${javac.target}" deprecation="${javac.deprecation}" debug="${javac.debug}" includeantruntime="false">
+			<classpath refid="inventory.classpath" />
+			<classpath refid="inventory.test.classpath" />
+		</javac>
+	</target>
+	
+	<target name="jar" depends="init,compile,compile-test">
 		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
