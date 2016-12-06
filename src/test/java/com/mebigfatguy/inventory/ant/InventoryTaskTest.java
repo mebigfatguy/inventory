@@ -38,7 +38,7 @@ public class InventoryTaskTest {
 
             @Override
             public void messageLogged(BuildEvent event) {
-                p.log(event.getMessage());
+                System.out.println(event.getMessage());
             }
         });
 
