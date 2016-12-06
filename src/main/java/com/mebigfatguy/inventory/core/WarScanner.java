@@ -40,6 +40,8 @@ public class WarScanner implements ArchiveScanner {
                     } finally {
                         inventory.resetStream();
                     }
+                } else if (fileName.endsWith("/")) {
+
                 } else {
                     try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
                         FileScanner scanner = new FileScanner();

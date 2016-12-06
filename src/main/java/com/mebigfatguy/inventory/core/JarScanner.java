@@ -32,12 +32,16 @@ public class JarScanner implements ArchiveScanner {
             ZipEntry entry = zis.getNextEntry();
             while (entry != null) {
                 String fileName = entry.getName();
-                try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
-                    FileScanner scanner = new FileScanner();
-                    inventory.setStream(is);
-                    scanner.scan(fileName, inventory);
-                } finally {
-                    inventory.resetStream();
+                if (fileName.endsWith("/")) {
+
+                } else {
+                    try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
+                        FileScanner scanner = new FileScanner();
+                        inventory.setStream(is);
+                        scanner.scan(fileName, inventory);
+                    } finally {
+                        inventory.resetStream();
+                    }
                 }
                 entry = zis.getNextEntry();
             }
