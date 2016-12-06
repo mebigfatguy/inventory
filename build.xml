@@ -25,6 +25,7 @@
 	<path id="inventory.test.classpath">
         <pathelement location="${test-classes.dir}"/>
 		<pathelement location="${lib.dir}/junit-${junit.version}.jar"/>
+		<pathelement location="${lib.dir}/hamcrest-core-${hamcrest-core.version}.jar"/>
  	</path>
         	
     <target name="info">
