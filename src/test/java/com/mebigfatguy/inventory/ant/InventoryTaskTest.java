@@ -32,7 +32,7 @@ public class InventoryTaskTest {
         Project p = new Project();
         t.setProject(p);
 
-        t.setEar(new File(""));
+        t.setEar(new File("/home/dave/dev/primavera/authorization-microservice/snapshots/authorization.ear"));
 
         p.addBuildListener(new DefaultBuildListener() {
 

@@ -18,6 +18,7 @@
 package com.mebigfatguy.inventory.cls;
 
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.mebigfatguy.inventory.core.Inventory;
@@ -29,5 +30,10 @@ public class ClassInventoryVisitor extends ClassVisitor {
     public ClassInventoryVisitor(Inventory inventory) {
         super(Opcodes.ASM5);
         this.inventory = inventory;
+    }
+
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+        return new MethodInventoryVisitor(inventory);
     }
 }
