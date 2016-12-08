@@ -25,6 +25,9 @@ import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.mebigfatguy.inventory.utils.NonClosingInputStream;
 
 public class Inventory implements AutoCloseable {
@@ -97,6 +100,11 @@ public class Inventory implements AutoCloseable {
 
     public InventoryEventFirer getEventFirer() {
         return new InventoryEventFirer(listeners);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
     class InventoryRecorder implements InventoryEventListener {

@@ -19,6 +19,9 @@ package com.mebigfatguy.inventory.core;
 
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class InventoryEventFirer {
 
     private Set<InventoryEventListener> listeners;
@@ -73,6 +76,11 @@ public class InventoryEventFirer {
         for (InventoryEventListener listener : listeners) {
             listener.failure(info);
         }
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
 }

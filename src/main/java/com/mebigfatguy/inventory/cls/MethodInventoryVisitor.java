@@ -17,6 +17,8 @@
  */
 package com.mebigfatguy.inventory.cls;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -30,4 +32,10 @@ public class MethodInventoryVisitor extends MethodVisitor {
         super(Opcodes.ASM5);
         this.inventory = inventory;
     }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
 }

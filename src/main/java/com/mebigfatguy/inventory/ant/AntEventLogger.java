@@ -17,6 +17,8 @@
  */
 package com.mebigfatguy.inventory.ant;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.tools.ant.Project;
 
 import com.mebigfatguy.inventory.core.InventoryEventListener;
@@ -67,5 +69,10 @@ public class AntEventLogger implements InventoryEventListener {
     @Override
     public void failure(String info) {
         project.log("ERROR: " + info, Project.MSG_ERR);
+    }
+    
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

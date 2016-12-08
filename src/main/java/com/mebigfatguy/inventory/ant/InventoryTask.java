@@ -19,6 +19,8 @@ package com.mebigfatguy.inventory.ant;
 
 import java.io.File;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
@@ -52,4 +54,10 @@ public class InventoryTask extends Task {
             throw new BuildException("Failed to take inventory of " + archive, e);
         }
     }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
 }

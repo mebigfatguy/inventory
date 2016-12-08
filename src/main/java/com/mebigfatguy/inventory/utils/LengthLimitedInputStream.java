@@ -21,6 +21,9 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class LengthLimitedInputStream extends InputStream {
 
     private InputStream parentStream;
@@ -95,4 +98,10 @@ public class LengthLimitedInputStream extends InputStream {
     public synchronized void reset() throws IOException {
         throw new IOException("Mark not supported by LengthLimitedInputStream");
     }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
+
 }
