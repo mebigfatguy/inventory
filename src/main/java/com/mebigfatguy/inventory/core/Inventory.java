@@ -107,7 +107,7 @@ public class Inventory implements AutoCloseable {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    class InventoryRecorder implements InventoryEventListener {
+    static class InventoryRecorder implements InventoryEventListener {
 
         @Override
         public void scanningWar(String warName) {
