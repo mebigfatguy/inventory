@@ -31,7 +31,7 @@ public class ClassScanner implements ArchiveScanner {
 
         try (InputStream is = inventory.getStream()) {
             ClassInventoryVisitor visitor = new ClassInventoryVisitor(inventory);
-            ClassReader cr = new ClassReader(inventory.getStream());
+            ClassReader cr = new ClassReader(is);
             cr.accept(visitor, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
         }
     }
