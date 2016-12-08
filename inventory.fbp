@@ -1,0 +1,6 @@
+<Project projectName="inventory">
+  <Jar>./target/classes</Jar>
+  <AuxClasspathEntry>./lib/ant-1.9.7.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/asm-5.1.jar</AuxClasspathEntry>
+  <SrcDir>./src/main/java</SrcDir>
+</Project>
