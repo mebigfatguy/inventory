@@ -77,7 +77,7 @@ public class Inventory implements AutoCloseable {
             scanner.scan(archive.getName(), this);
         } catch (IOException e) {
             getEventFirer().fireFailure(e.getMessage());
-            throw new InventoryException("Failed to read archive completely", e);
+            throw new InventoryException("Failed to read archive completely " + archive.getName(), e);
         } finally {
             removeInventoryEventListener(recorder);
         }
