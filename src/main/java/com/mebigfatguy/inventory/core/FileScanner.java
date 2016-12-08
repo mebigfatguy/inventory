@@ -37,7 +37,7 @@ public class FileScanner implements ArchiveScanner {
     }
 
     private String getExtension(String name) {
-        int dotPos = name.lastIndexOf(".");
+        int dotPos = name.lastIndexOf('.');
         if (dotPos < 0) {
             return "";
         }
