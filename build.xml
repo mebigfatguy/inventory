@@ -20,6 +20,7 @@
         <pathelement location="${classes.dir}"/>
 		<pathelement location="${lib.dir}/ant-${ant_.version}.jar"/>
 		<pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
+		<pathelement location="${lib.dir}/commons-lang3-${commons-lang3.version}.jar"/>
  	</path>
         	
 	<path id="inventory.test.classpath">
