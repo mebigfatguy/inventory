@@ -4,10 +4,15 @@
     <property file="version.properties" />
 	
 	<property name="src.dir" value="${basedir}/src/main/java" />
+	<property name="reference.dir" value="${basedir}/src/reference/java" />
 	<property name="test.dir" value="${basedir}/src/test/java" />
+	<property name="references-resources.dir" value="${basedir}/src/reference/resources" />
 	<property name="target.dir" value="${basedir}/target"/>
 	<property name="classes.dir" value="${target.dir}/classes" />
+	<property name="reference-classes.dir" value="${target.dir}/reference-classes" />
 	<property name="test-classes.dir" value="${target.dir}/test-classes" />
+	<property name="war.dir" value="${target.dir}/war" />
+	<property name="ear.dir" value="${target.dir}/ear" />
     <property name="lib.dir" value="${basedir}/lib" />
 	<property name="javac.source" value="1.8" />
 	<property name="javac.target" value="1.8" />
@@ -22,7 +27,10 @@
 		<pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
 		<pathelement location="${lib.dir}/commons-lang3-${commons-lang3.version}.jar"/>
  	</path>
-        	
+ 
+	<path id="inventory.reference.classpath">
+	</path>
+	
 	<path id="inventory.test.classpath">
         <pathelement location="${test-classes.dir}"/>
 		<pathelement location="${lib.dir}/junit-${junit.version}.jar"/>
@@ -47,7 +55,10 @@
 	
 	<target name="init" depends="yank">
 		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${reference-classes.dir}"/>
 		<mkdir dir="${test-classes.dir}"/>
+		<mkdir dir="${war.dir}" />
+		<mkdir dir="${ear.dir}" />
 	</target>
 		
 	<target name="clean">
@@ -60,6 +71,12 @@
 		</javac>
 	</target>
 	
+	<target name="compile-reference" depends="init">
+		<javac srcdir="${reference.dir}" destdir="${reference-classes.dir}" source="${javac.source}" target="${javac.target}" deprecation="${javac.deprecation}" debug="${javac.debug}" includeantruntime="false">
+			<classpath refid="inventory.reference.classpath" />
+		</javac>
+	</target>
+	
 	<target name="compile-test" depends="init, compile">
 		<javac srcdir="${test.dir}" destdir="${test-classes.dir}" source="${javac.source}" target="${javac.target}" deprecation="${javac.deprecation}" debug="${javac.debug}" includeantruntime="false">
 			<classpath refid="inventory.classpath" />
@@ -67,7 +84,23 @@
 		</javac>
 	</target>
 	
-	<target name="jar" depends="init,compile,compile-test">
+	<target name="reference-war" depends="init,compile-reference">
+		<mkdir dir="${war.dir}/WEB-INF"/>
+		<mkdir dir="${war.dir}/WEB-INF/classes"/>
+		<copy todir="${war.dir}/WEB-INF/classes" includeEmptyDirs="true">
+			<fileset dir="${reference-classes.dir}">
+				<include name="**/*.class" />
+			</fileset>
+		</copy>
+		<copy todir="${war.dir}/WEB-INF">
+			<fileset dir="${references-resources.dir}">
+				<include name="**/*.xml" />
+			</fileset>
+		</copy>
+	</target>
+	
+	
+	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-war" description="builds the jar file">
 		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />

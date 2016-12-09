@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/reference/resources"/>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
+	<classpathentry kind="src" path="src/reference/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/ant-1.9.7.jar" sourcepath="/home/dave/.m2/repository/org/apache/ant/ant/1.9.7/ant-1.9.7-sources.jar"/>
 	<classpathentry kind="lib" path="lib/asm-5.1.jar" sourcepath="lib/sources/asm-5.1-sources.jar"/>
