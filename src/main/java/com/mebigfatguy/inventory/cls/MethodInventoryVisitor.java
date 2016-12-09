@@ -21,16 +21,32 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
 import com.mebigfatguy.inventory.core.Inventory;
 
 public class MethodInventoryVisitor extends MethodVisitor {
 
     private Inventory inventory;
+    private String owningClass;
 
-    public MethodInventoryVisitor(Inventory inventory) {
+    public MethodInventoryVisitor(String clsName, Inventory inventory) {
         super(Opcodes.ASM5);
+        this.owningClass = clsName;
         this.inventory = inventory;
+    }
+
+    @Override
+    public void visitLdcInsn(Object cst) {
+        if (cst instanceof Type) {
+            Type t = (Type) cst;
+
+            int sort = t.getSort();
+            if ((sort == Type.OBJECT) || (sort == Type.ARRAY) || (sort == Type.METHOD)) {
+                String clsName = t.getClassName();
+                inventory.getEventFirer().firePackageUsed(clsName, owningClass);
+            }
+        }
     }
 
     @Override

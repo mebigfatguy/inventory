@@ -36,7 +36,7 @@ public class ClassInventoryVisitor extends ClassVisitor {
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-        return new MethodInventoryVisitor(inventory);
+        return new MethodInventoryVisitor(name, inventory);
     }
 
     @Override
