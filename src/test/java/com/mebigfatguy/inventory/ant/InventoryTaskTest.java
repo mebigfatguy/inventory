@@ -32,7 +32,7 @@ public class InventoryTaskTest {
         Project p = new Project();
         t.setProject(p);
 
-        t.setEar(new File("/home/dave/dev/sample.war"));
+        t.setEar(new File("./target/sample.war"));
 
         p.addBuildListener(new DefaultBuildListener() {
 

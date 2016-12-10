@@ -98,9 +98,14 @@
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
+		
+		<jar destfile="${target.dir}/sample.war">
+			<fileset dir="${target.dir}/war">
+				<include name="**/*" />
+			</fileset>
+		</jar>
 	</target>
-	
-	
+		
 	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-war" description="builds the jar file">
 		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
 			<fileset dir="${classes.dir}">
