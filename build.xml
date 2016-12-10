@@ -29,6 +29,7 @@
  	</path>
  
 	<path id="inventory.reference.classpath">
+        <pathelement location="${lib.dir}/javax.servlet-api-${javax.servlet-api.version}.jar"/>
 	</path>
 	
 	<path id="inventory.test.classpath">
