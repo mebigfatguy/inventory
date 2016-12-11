@@ -100,13 +100,27 @@
 		</copy>
 		
 		<jar destfile="${target.dir}/sample.war">
-			<fileset dir="${target.dir}/war">
+			<fileset dir="${war.dir}">
 				<include name="**/*" />
 			</fileset>
 		</jar>
 	</target>
+	
+	<target name="reference-ear" depends="reference-war" description="builds the reference ear">
+		<mkdir dir="${ear.dir}/APP-INF" />
+		<mkdir dir="${ear.dir}/APP-INF/lib" />
+		<mkdir dir="${ear.dir}/WEB-INF" />
+		<copy file="${target.dir}/sample.war" todir="${ear.dir}/APP-INF/lib" />
 		
-	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-war" description="builds the jar file">
+		<jar destfile="${target.dir}/sample.ear">
+			<fileset dir="${ear.dir}">
+				<include name="**/*" />
+			</fileset>
+		</jar>
+		
+	</target>
+		
+	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-ear" description="builds the jar file">
 		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
