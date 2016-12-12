@@ -6,7 +6,8 @@
 	<property name="src.dir" value="${basedir}/src/main/java" />
 	<property name="reference.dir" value="${basedir}/src/reference/java" />
 	<property name="test.dir" value="${basedir}/src/test/java" />
-	<property name="references-resources.dir" value="${basedir}/src/reference/resources" />
+	<property name="reference-resources.dir" value="${basedir}/src/reference/resources" />
+	<property name="ear-resources.dir" value="${basedir}/src/ear/resources" />
 	<property name="target.dir" value="${basedir}/target"/>
 	<property name="classes.dir" value="${target.dir}/classes" />
 	<property name="reference-classes.dir" value="${target.dir}/reference-classes" />
@@ -94,7 +95,7 @@
 			</fileset>
 		</copy>
 		<copy todir="${war.dir}/WEB-INF">
-			<fileset dir="${references-resources.dir}">
+			<fileset dir="${reference-resources.dir}">
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
@@ -110,7 +111,9 @@
 		<mkdir dir="${ear.dir}/APP-INF" />
 		<mkdir dir="${ear.dir}/APP-INF/lib" />
 		<mkdir dir="${ear.dir}/WEB-INF" />
-		<copy file="${target.dir}/sample.war" todir="${ear.dir}/APP-INF/lib" />
+		<copy file="${target.dir}/sample.war" todir="${ear.dir}" />
+		
+		<copy file="${ear-resources.dir}/application.xml" todir="${ear.dir}/WEB-INF" />
 		
 		<jar destfile="${target.dir}/sample.ear">
 			<fileset dir="${ear.dir}">
