@@ -18,35 +18,27 @@
 package com.mebigfatguy.inventory.core;
 
 import java.io.IOException;
-import java.util.Locale;
+import java.io.InputStream;
 
-public class FileScanner implements ArchiveScanner {
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+public class XMLScanner implements ArchiveScanner {
 
     @Override
     public void scan(String name, Inventory inventory) throws IOException {
-        inventory.getEventFirer().fireScanningFile(name);
-        String extension = getExtension(name);
+        try (InputStream is = inventory.getStream()) {
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            DocumentBuilder db = dbf.newDocumentBuilder();
 
-        switch (extension) {
-            case "class": {
-                ClassScanner scanner = new ClassScanner();
-                scanner.scan(name, inventory);
-            }
-            break;
-
-            case "xml": {
-                XMLScanner scanner = new XMLScanner();
-                scanner.scan(name, inventory);
-            }
-            break;
+            Document d = db.parse(is);
+        } catch (ParserConfigurationException | SAXException e) {
+            throw new IOException("Failed to parse xml file: " + name, e);
         }
-    }
-
-    private String getExtension(String name) {
-        int dotPos = name.lastIndexOf('.');
-        if (dotPos < 0) {
-            return "";
-        }
-        return name.substring(dotPos + 1).toLowerCase(Locale.ENGLISH);
     }
 }
