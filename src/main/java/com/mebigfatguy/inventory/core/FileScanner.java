@@ -27,19 +27,21 @@ public class FileScanner implements ArchiveScanner {
         inventory.getEventFirer().fireScanningFile(name);
         String extension = getExtension(name);
 
+        ArchiveScanner scanner;
         switch (extension) {
-            case "class": {
-                ClassScanner scanner = new ClassScanner();
-                scanner.scan(name, inventory);
-            }
+            case "class":
+                scanner = new ClassScanner();
             break;
 
-            case "xml": {
-                XMLScanner scanner = new XMLScanner();
-                scanner.scan(name, inventory);
-            }
+            case "xml":
+                scanner = new XMLScanner();
             break;
+
+            default:
+                return;
         }
+
+        scanner.scan(name, inventory);
     }
 
     private String getExtension(String name) {
