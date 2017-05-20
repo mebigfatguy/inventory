@@ -23,9 +23,13 @@ import java.io.InputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+
+import com.mebigfatguy.inventory.xml.InventoryNamespaceContext;
 
 public class XMLScanner implements ArchiveScanner {
 
@@ -35,8 +39,13 @@ public class XMLScanner implements ArchiveScanner {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             dbf.setNamespaceAware(true);
             DocumentBuilder db = dbf.newDocumentBuilder();
-
             Document d = db.parse(is);
+
+            XPathFactory xpf = XPathFactory.newInstance();
+            XPath xp = xpf.newXPath();
+
+            xp.setNamespaceContext(new InventoryNamespaceContext());
+
         } catch (ParserConfigurationException | SAXException e) {
             throw new IOException("Failed to parse xml file: " + name, e);
         }
