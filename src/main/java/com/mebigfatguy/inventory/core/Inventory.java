@@ -22,7 +22,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -109,6 +111,8 @@ public class Inventory implements AutoCloseable {
 
     static class InventoryRecorder implements InventoryEventListener {
 
+        private Map<String, Set<String>> packagesUsed = new HashMap<>();
+
         @Override
         public void scanningWar(String warName) {
         }
@@ -135,6 +139,13 @@ public class Inventory implements AutoCloseable {
 
         @Override
         public void packageUsed(String packageName, String byFile) {
+            Set<String> packages = packagesUsed.get(byFile);
+            if (packages == null) {
+                packages = new HashSet<>();
+                packagesUsed.put(byFile, packages);
+            }
+
+            packages.add(PackageName);
         }
 
         @Override
