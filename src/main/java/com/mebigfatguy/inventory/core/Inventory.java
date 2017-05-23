@@ -145,7 +145,7 @@ public class Inventory implements AutoCloseable {
                 packagesUsed.put(byFile, packages);
             }
 
-            packages.add(PackageName);
+            packages.add(packageName);
         }
 
         @Override
