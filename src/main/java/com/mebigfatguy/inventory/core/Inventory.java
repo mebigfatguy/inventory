@@ -112,6 +112,7 @@ public class Inventory implements AutoCloseable {
 
     class InventoryRecorder implements InventoryEventListener {
 
+        private Map<String, Set<String>> jarInventory = new HashMap<>();
         private Map<String, Set<String>> packagesUsed = new HashMap<>();
 
         @Override
@@ -137,6 +138,13 @@ public class Inventory implements AutoCloseable {
 
         @Override
         public void packageRecorded(String packageName) {
+            Set<String> packages = jarInventory.get(activeJar);
+            if (packages == null) {
+                packages = new HashSet<>();
+                packagesUsed.put(activeJar, packages);
+            }
+
+            packages.add(packageName);
         }
 
         @Override
