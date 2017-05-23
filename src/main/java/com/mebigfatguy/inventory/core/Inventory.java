@@ -38,6 +38,7 @@ public class Inventory implements AutoCloseable {
     private Set<InventoryEventListener> listeners;
     private InputStream stream;
     private InputStream overrideStream;
+    private String activeJar;
 
     public Inventory(File archive) throws IOException {
         this.archive = archive;
@@ -109,20 +110,25 @@ public class Inventory implements AutoCloseable {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    static class InventoryRecorder implements InventoryEventListener {
+    class InventoryRecorder implements InventoryEventListener {
 
         private Map<String, Set<String>> packagesUsed = new HashMap<>();
 
         @Override
-        public void scanningWar(String warName) {
+        public void scanningWar(String warName, ScanStatus status) {
         }
 
         @Override
-        public void scanningJar(String jarName) {
+        public void scanningJar(String jarName, ScanStatus status) {
+            if (status == ScanStatus.START) {
+                activeJar = jarName;
+            } else {
+                activeJar = null;
+            }
         }
 
         @Override
-        public void scanningFile(String fileName) {
+        public void scanningFile(String fileName, ScanStatus status) {
         }
 
         @Override

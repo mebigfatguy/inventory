@@ -17,22 +17,6 @@
  */
 package com.mebigfatguy.inventory.core;
 
-public interface InventoryEventListener {
-
-    void scanningWar(String warName, ScanStatus status);
-
-    void scanningJar(String jarName, ScanStatus status);
-
-    void scanningFile(String fileName, ScanStatus status);
-
-    void jarRecorded(String jarName);
-
-    void packageRecorded(String packageName);
-
-    void jarUsed(String jarName, String byFile);
-
-    void packageUsed(String packageName, String byFile);
-
-    void failure(String info);
-
+public enum ScanStatus {
+    START, END
 }

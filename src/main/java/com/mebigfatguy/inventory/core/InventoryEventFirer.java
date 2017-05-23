@@ -30,21 +30,21 @@ public class InventoryEventFirer {
         this.listeners = listeners;
     }
 
-    public void fireScanningWar(String warName) {
+    public void fireScanningWar(String warName, ScanStatus status) {
         for (InventoryEventListener listener : listeners) {
-            listener.scanningWar(warName);
+            listener.scanningWar(warName, status);
         }
     }
 
-    public void fireScanningJar(String jarName) {
+    public void fireScanningJar(String jarName, ScanStatus status) {
         for (InventoryEventListener listener : listeners) {
-            listener.scanningJar(jarName);
+            listener.scanningJar(jarName, status);
         }
     }
 
-    public void fireScanningFile(String fileName) {
+    public void fireScanningFile(String fileName, ScanStatus status) {
         for (InventoryEventListener listener : listeners) {
-            listener.scanningFile(fileName);
+            listener.scanningFile(fileName, status);
         }
     }
 

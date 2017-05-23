@@ -24,24 +24,28 @@ public class FileScanner implements ArchiveScanner {
 
     @Override
     public void scan(String name, Inventory inventory) throws IOException {
-        inventory.getEventFirer().fireScanningFile(name);
-        String extension = getExtension(name);
+        inventory.getEventFirer().fireScanningFile(name, ScanStatus.START);
+        try {
+            String extension = getExtension(name);
 
-        ArchiveScanner scanner;
-        switch (extension) {
-            case "class":
-                scanner = new ClassScanner();
-            break;
+            ArchiveScanner scanner;
+            switch (extension) {
+                case "class":
+                    scanner = new ClassScanner();
+                break;
 
-            case "xml":
-                scanner = new XMLScanner();
-            break;
+                case "xml":
+                    scanner = new XMLScanner();
+                break;
 
-            default:
-                return;
+                default:
+                    return;
+            }
+
+            scanner.scan(name, inventory);
+        } finally {
+            inventory.getEventFirer().fireScanningFile(name, ScanStatus.END);
         }
-
-        scanner.scan(name, inventory);
     }
 
     private String getExtension(String name) {

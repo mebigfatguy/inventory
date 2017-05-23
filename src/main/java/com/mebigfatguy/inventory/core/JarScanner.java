@@ -27,7 +27,7 @@ public class JarScanner implements ArchiveScanner {
 
     @Override
     public void scan(String name, Inventory inventory) throws IOException {
-        inventory.getEventFirer().fireScanningJar(name);
+        inventory.getEventFirer().fireScanningJar(name, ScanStatus.START);
         try (ZipInputStream zis = new ZipInputStream(inventory.getStream())) {
             ZipEntry entry = zis.getNextEntry();
             while (entry != null) {
@@ -43,6 +43,8 @@ public class JarScanner implements ArchiveScanner {
                 }
                 entry = zis.getNextEntry();
             }
+        } finally {
+            inventory.getEventFirer().fireScanningJar(name, ScanStatus.END);
         }
     }
 }

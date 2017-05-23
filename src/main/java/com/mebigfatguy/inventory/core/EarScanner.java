@@ -27,7 +27,7 @@ public class EarScanner implements ArchiveScanner {
 
     @Override
     public void scan(String name, Inventory inventory) throws IOException {
-        inventory.getEventFirer().fireScanningWar(name);
+        inventory.getEventFirer().fireScanningWar(name, ScanStatus.START);
         try (ZipInputStream zis = new ZipInputStream(inventory.getStream())) {
             ZipEntry entry = zis.getNextEntry();
             while (entry != null) {
@@ -61,6 +61,8 @@ public class EarScanner implements ArchiveScanner {
                 }
                 entry = zis.getNextEntry();
             }
+        } finally {
+            inventory.getEventFirer().fireScanningWar(name, ScanStatus.END);
         }
     }
 }

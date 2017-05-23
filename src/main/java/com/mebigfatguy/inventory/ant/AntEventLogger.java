@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.tools.ant.Project;
 
 import com.mebigfatguy.inventory.core.InventoryEventListener;
+import com.mebigfatguy.inventory.core.ScanStatus;
 
 public class AntEventLogger implements InventoryEventListener {
 
@@ -32,18 +33,18 @@ public class AntEventLogger implements InventoryEventListener {
     }
 
     @Override
-    public void scanningWar(String warName) {
-        project.log("Scanning War: " + warName);
+    public void scanningWar(String warName, ScanStatus status) {
+        project.log(status + " Scanning War: " + warName);
     }
 
     @Override
-    public void scanningJar(String jarName) {
-        project.log("Scanning Jar: " + jarName);
+    public void scanningJar(String jarName, ScanStatus status) {
+        project.log(status + " Scanning Jar: " + jarName);
     }
 
     @Override
-    public void scanningFile(String fileName) {
-        project.log("Scanning File: " + fileName);
+    public void scanningFile(String fileName, ScanStatus status) {
+        project.log(status + " Scanning File: " + fileName);
     }
 
     @Override
@@ -70,7 +71,7 @@ public class AntEventLogger implements InventoryEventListener {
     public void failure(String info) {
         project.log("ERROR: " + info, Project.MSG_ERR);
     }
-    
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
