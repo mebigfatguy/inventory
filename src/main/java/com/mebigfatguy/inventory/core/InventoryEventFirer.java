@@ -54,9 +54,9 @@ public class InventoryEventFirer {
         }
     }
 
-    public void firePackageRecorded(String packageName) {
+    public void fireClassRecorded(String className) {
         for (InventoryEventListener listener : listeners) {
-            listener.packageRecorded(packageName);
+            listener.classRecorded(className);
         }
     }
 
@@ -66,9 +66,9 @@ public class InventoryEventFirer {
         }
     }
 
-    public void firePackageUsed(String packageName, String byFile) {
+    public void fireClassUsed(String className, String byFile) {
         for (InventoryEventListener listener : listeners) {
-            listener.packageUsed(packageName, byFile);
+            listener.classUsed(className, byFile);
         }
     }
 

@@ -53,7 +53,7 @@ public class AntEventLogger implements InventoryEventListener {
     }
 
     @Override
-    public void packageRecorded(String packageName) {
+    public void classRecorded(String packageName) {
         project.log("Recorded Package: " + packageName);
     }
 
@@ -63,7 +63,7 @@ public class AntEventLogger implements InventoryEventListener {
     }
 
     @Override
-    public void packageUsed(String packageName, String byFile) {
+    public void classUsed(String packageName, String byFile) {
         project.log(packageName + "package used by: " + byFile);
     }
 

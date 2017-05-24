@@ -27,11 +27,11 @@ public interface InventoryEventListener {
 
     void jarRecorded(String jarName);
 
-    void packageRecorded(String packageName);
+    void classRecorded(String className);
 
     void jarUsed(String jarName, String byFile);
 
-    void packageUsed(String packageName, String byFile);
+    void classUsed(String className, String byFile);
 
     void failure(String info);
 

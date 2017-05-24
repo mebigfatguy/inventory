@@ -44,7 +44,7 @@ public class MethodInventoryVisitor extends MethodVisitor {
             int sort = t.getSort();
             if ((sort == Type.OBJECT) || (sort == Type.ARRAY) || (sort == Type.METHOD)) {
                 String clsName = t.getClassName();
-                inventory.getEventFirer().firePackageUsed(clsName, owningClass);
+                inventory.getEventFirer().fireClassUsed(clsName, owningClass);
             }
         }
     }

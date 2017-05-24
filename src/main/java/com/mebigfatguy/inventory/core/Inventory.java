@@ -137,7 +137,7 @@ public class Inventory implements AutoCloseable {
         }
 
         @Override
-        public void packageRecorded(String packageName) {
+        public void classRecorded(String packageName) {
             Set<String> packages = jarInventory.get(activeJar);
             if (packages == null) {
                 packages = new HashSet<>();
@@ -152,7 +152,7 @@ public class Inventory implements AutoCloseable {
         }
 
         @Override
-        public void packageUsed(String packageName, String byFile) {
+        public void classUsed(String packageName, String byFile) {
             Set<String> packages = packagesUsed.get(byFile);
             if (packages == null) {
                 packages = new HashSet<>();

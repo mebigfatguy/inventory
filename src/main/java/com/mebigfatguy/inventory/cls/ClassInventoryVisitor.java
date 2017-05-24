@@ -36,6 +36,7 @@ public class ClassInventoryVisitor extends ClassVisitor {
 
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        inventory.getEventFirer().fireClassRecorded(name);
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
