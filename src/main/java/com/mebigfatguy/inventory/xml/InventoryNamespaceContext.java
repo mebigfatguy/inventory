@@ -51,4 +51,22 @@ public class InventoryNamespaceContext implements NamespaceContext {
     public Iterator getPrefixes(String namespaceURI) {
         return null;
     }
+
+    public static String springQualified(String... name) {
+        return qualify(SPRING_PREFIX, name);
+    }
+
+    public static String webXmlQualified(String... name) {
+        return qualify(WEBXML_PREFIX, name);
+    }
+
+    private static String qualify(String prefix, String... name) {
+        StringBuilder sb = new StringBuilder(name.length * 10);
+        String separator = "";
+        for (String n : name) {
+            sb.append(separator).append(prefix).append(":").append(n);
+            separator = "/";
+        }
+        return sb.toString();
+    }
 }
