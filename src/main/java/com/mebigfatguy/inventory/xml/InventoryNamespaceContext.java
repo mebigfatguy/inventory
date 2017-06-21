@@ -48,8 +48,8 @@ public class InventoryNamespaceContext implements NamespaceContext {
     }
 
     @Override
-    public Iterator getPrefixes(String namespaceURI) {
-        return null;
+    public Iterator<String> getPrefixes(String namespaceURI) {
+        return prefixToUrl.keySet().iterator();
     }
 
     public static String springQualified(String... name) {
