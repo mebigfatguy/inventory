@@ -55,10 +55,14 @@ public class LengthLimitedInputStream extends InputStream {
             len = (int) remainingLength;
         }
 
-        if (len <= 0) {
+        if (len < 0) {
             throw new EOFException("Read past the end of the stream");
         }
 
+        if (len == 0) {
+        	return -1;
+        }
+        
         int actLen = parentStream.read(b, off, len);
         remainingLength -= actLen;
         return actLen;
