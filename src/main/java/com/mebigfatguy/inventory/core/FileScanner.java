@@ -37,6 +37,10 @@ public class FileScanner implements ArchiveScanner {
                 case "xml":
                     scanner = new XMLScanner();
                 break;
+                
+                case "properties":
+                	scanner = new PropertiesScanner();
+                break;
 
                 default:
                     return;
