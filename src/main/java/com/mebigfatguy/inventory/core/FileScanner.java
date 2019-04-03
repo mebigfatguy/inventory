@@ -39,7 +39,10 @@ public class FileScanner implements ArchiveScanner {
                 break;
                 
                 case "properties":
-                	scanner = new PropertiesScanner();
+                	String parent = name.substring(0, name.lastIndexOf("/"));
+                	if (parent.endsWith("META-INF/services")) {
+                		scanner = new PropertiesScanner();
+                	}
                 break;
 
                 default:
