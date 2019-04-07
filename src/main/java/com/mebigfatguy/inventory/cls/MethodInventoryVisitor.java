@@ -50,6 +50,18 @@ public class MethodInventoryVisitor extends MethodVisitor {
     }
 
     @Override
+	public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+		
+    	if (opcode == Opcodes.INVOKESTATIC) {
+    		inventory.getEventFirer().fireClassUsed(owner, owningClass);
+    	} else if (opcode == Opcodes.INVOKESPECIAL) {
+    		if ("<init>".equals(name)) {
+        		inventory.getEventFirer().fireClassUsed(owner, owningClass);
+    		}
+    	}
+	}
+
+	@Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
