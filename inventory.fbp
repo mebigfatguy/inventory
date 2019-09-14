@@ -1,6 +1,8 @@
 <Project projectName="inventory">
-  <Jar>./target/classes</Jar>
-  <AuxClasspathEntry>./lib/ant-1.9.7.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>./lib/asm-5.1.jar</AuxClasspathEntry>
-  <SrcDir>./src/main/java</SrcDir>
+  <Jar>././target/classes</Jar>
+  <AuxClasspathEntry>./lib/ant-1.10.7.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/asm-7.2.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/javax.servlet-api-4.0.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/commons-lang3-3.9.jar</AuxClasspathEntry>
+  <SrcDir>././src/main/java</SrcDir>
 </Project>
