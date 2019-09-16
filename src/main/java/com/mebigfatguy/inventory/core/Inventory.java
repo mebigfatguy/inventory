@@ -19,9 +19,9 @@ package com.mebigfatguy.inventory.core;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class Inventory implements AutoCloseable {
 
     public Inventory(File archive) throws IOException {
         this.archive = archive;
-        stream = new BufferedInputStream(new FileInputStream(archive));
+        stream = new BufferedInputStream(Files.newInputStream(archive.toPath()));
         listeners = new HashSet<>();
     }
 
