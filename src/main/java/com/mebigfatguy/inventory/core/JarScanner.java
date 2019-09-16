@@ -30,11 +30,12 @@ public class JarScanner implements ArchiveScanner {
         inventory.getEventFirer().fireScanningJar(name, ScanStatus.START);
         try (ZipInputStream zis = new ZipInputStream(inventory.getStream())) {
             ZipEntry entry = zis.getNextEntry();
+            FileScanner scanner = new FileScanner();
+
             while (entry != null) {
                 String fileName = entry.getName();
                 if (!fileName.endsWith("/")) {
                     try (LengthLimitedInputStream is = new LengthLimitedInputStream(zis, entry.getSize())) {
-                        FileScanner scanner = new FileScanner();
                         inventory.setStream(is);
                         scanner.scan(fileName, inventory);
                     } finally {
