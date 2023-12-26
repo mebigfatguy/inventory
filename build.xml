@@ -1,4 +1,4 @@
-<project name="inventory" default="jar" basedir=".">
+<project name="inventory" default="complete" basedir=".">
 	<property file="user.properties" />
     <property file="build.properties" />
     <property file="version.properties" />
@@ -6,7 +6,7 @@
 	<property name="src.dir" value="${basedir}/src/main/java" />
 	<property name="reference.dir" value="${basedir}/src/reference/java" />
 	<property name="test.dir" value="${basedir}/src/test/java" />
-	<property name="report.dir" value="${basedir}/reports" />
+	<property name="reports.dir" value="${basedir}/reports" />
 	<property name="reference-resources.dir" value="${basedir}/src/reference/resources" />
 	<property name="ear-resources.dir" value="${basedir}/src/ear/resources" />
 	<property name="target.dir" value="${basedir}/target"/>
@@ -128,7 +128,7 @@
 		
 	</target>
 		
-	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-ear, test" description="builds the jar file">
+	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-ear" description="builds the jar file">
 		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
@@ -151,15 +151,15 @@
 		</jar>
 	</target>
 	
-	<target name="test" depends="reference-ear">
+	<target name="test" depends="jar, reference-ear">
+		<mkdir dir="${reports.dir}"/>
 		<junitlauncher printsummary="yes">
 			<classpath refid="inventory.test.classpath"/>
 			<classpath refid="inventory.classpath"/>
 			<classpath refid="inventory.reference.classpath"/>
 			
 			<testclasses outputdir="${reports.dir}">
-				<fileset dir="${test-classes.dir}" includes="**/*Test.java"/>
-                <listener type="legacy-brief" sendSysOut="true"/>
+				<fileset dir="${test-classes.dir}" includes="**/*Test.class"/>
                 <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
 	            <fork dir="${basedir}" includeJUnitPlatformLibraries="false">
 	                <jvmarg value="-Djava.awt.headless=true" />
@@ -167,5 +167,7 @@
 			</testclasses>
 		</junitlauncher>
 	</target>
+	
+	<target name="complete" depends="jar, test"/>
 
 </project>
