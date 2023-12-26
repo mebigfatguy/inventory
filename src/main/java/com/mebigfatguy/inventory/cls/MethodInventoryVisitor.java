@@ -31,7 +31,7 @@ public class MethodInventoryVisitor extends MethodVisitor {
     private String owningClass;
 
     public MethodInventoryVisitor(String clsName, Inventory inventory) {
-        super(Opcodes.ASM5);
+        super(Opcodes.ASM9);
         this.owningClass = clsName;
         this.inventory = inventory;
     }

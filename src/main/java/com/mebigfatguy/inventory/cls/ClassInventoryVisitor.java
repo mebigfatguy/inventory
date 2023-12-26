@@ -30,7 +30,7 @@ public class ClassInventoryVisitor extends ClassVisitor {
     private Inventory inventory;
 
     public ClassInventoryVisitor(Inventory inventory) {
-        super(Opcodes.ASM5);
+        super(Opcodes.ASM9);
         this.inventory = inventory;
     }
 
