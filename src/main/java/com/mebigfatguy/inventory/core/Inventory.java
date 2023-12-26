@@ -62,7 +62,7 @@ public class Inventory implements AutoCloseable {
         listeners.remove(listener);
     }
 
-    public void takeInventory() throws InventoryException {
+    public InventoryReport takeInventory() throws InventoryException {
 
         ArchiveScanner scanner;
 
@@ -78,6 +78,7 @@ public class Inventory implements AutoCloseable {
         try {
             addInventoryEventListener(recorder);
             scanner.scan(archive.getName(), this);
+            return recorder;
         } catch (IOException e) {
             getEventFirer().fireFailure(e.getMessage());
             throw new InventoryException("Failed to read archive completely " + archive.getName(), e);
@@ -110,7 +111,7 @@ public class Inventory implements AutoCloseable {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
-    class InventoryRecorder implements InventoryEventListener {
+    class InventoryRecorder implements InventoryEventListener, InventoryReport {
 
         private Map<String, Set<String>> jarInventory = new HashMap<>();
         private Map<String, Set<String>> packagesUsed = new HashMap<>();
@@ -165,7 +166,13 @@ public class Inventory implements AutoCloseable {
         @Override
         public void failure(String info) {
         }
-
+        
+        public Map<String, Set<String>> getJarInventory() {
+        	return jarInventory;
+        }
+        
+        public Map<String, Set<String>> getPackagedUsed() {
+        	return packagesUsed;
+        }
     }
-
 }
