@@ -6,6 +6,7 @@
 	<property name="src.dir" value="${basedir}/src/main/java" />
 	<property name="reference.dir" value="${basedir}/src/reference/java" />
 	<property name="test.dir" value="${basedir}/src/test/java" />
+	<property name="report.dir" value="${basedir}/reports" />
 	<property name="reference-resources.dir" value="${basedir}/src/reference/resources" />
 	<property name="ear-resources.dir" value="${basedir}/src/ear/resources" />
 	<property name="target.dir" value="${basedir}/target"/>
@@ -35,8 +36,12 @@
 	
 	<path id="inventory.test.classpath">
         <pathelement location="${test-classes.dir}"/>
-		<pathelement location="${lib.dir}/junit-${junit.version}.jar"/>
-		<pathelement location="${lib.dir}/hamcrest-core-${hamcrest-core.version}.jar"/>
+		<pathelement location="${lib.dir}/junit-jupiter-api-${junit-jupiter-api.version}.jar"/>
+		<pathelement location="${lib.dir}/junit-jupiter-engine-${junit-jupiter-engine.version}.jar"/>
+		<pathelement location="${lib.dir}/junit-platform-commons-${junit-platform-commons.version}.jar"/>
+		<pathelement location="${lib.dir}/junit-platform-launcher-${junit-platform-launcher.version}.jar"/>
+		<pathelement location="${lib.dir}/junit-platform-engine-${junit-platform-engine.version}.jar"/>
+		<pathelement location="${lib.dir}/opentest4j-${opentest4j.version}.jar"/>
  	</path>
         	
     <target name="info">
@@ -123,7 +128,7 @@
 		
 	</target>
 		
-	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-ear" description="builds the jar file">
+	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-ear, test" description="builds the jar file">
 		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
@@ -145,4 +150,22 @@
 			</manifest>
 		</jar>
 	</target>
+	
+	<target name="test" depends="reference-ear">
+		<junitlauncher printsummary="yes">
+			<classpath refid="inventory.test.classpath"/>
+			<classpath refid="inventory.classpath"/>
+			<classpath refid="inventory.reference.classpath"/>
+			
+			<testclasses outputdir="${reports.dir}">
+				<fileset dir="${test-classes.dir}" includes="**/*Test.java"/>
+                <listener type="legacy-brief" sendSysOut="true"/>
+                <listener type="legacy-xml" sendSysErr="true" sendSysOut="true"/>
+	            <fork dir="${basedir}" includeJUnitPlatformLibraries="false">
+	                <jvmarg value="-Djava.awt.headless=true" />
+	            </fork>
+			</testclasses>
+		</junitlauncher>
+	</target>
+
 </project>

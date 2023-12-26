@@ -19,14 +19,17 @@ package com.mebigfatguy.inventory.ant;
 
 import java.io.File;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
 import com.mebigfatguy.inventory.core.Inventory;
+import com.mebigfatguy.inventory.core.InventoryReport;
 
 public class InventoryTask extends Task {
 
@@ -56,7 +59,24 @@ public class InventoryTask extends Task {
 
             inventory.addInventoryEventListener(new AntEventLogger(getProject()));
 
-            inventory.takeInventory();
+            InventoryReport report = inventory.takeInventory();
+            Project p = getProject();
+            p.log("Jar Inventory");
+            for (Map.Entry<String, Set<String>> entry : report.getJarInventory().entrySet()) {
+            	p.log("\t" + entry.getKey());
+            	for (String j : entry.getValue()) {
+            		p.log("\t\t" + j);
+            	}
+            }
+            
+            p.log("Package Inventory");
+            for (Map.Entry<String, Set<String>> entry : report.getPackagedUsed().entrySet()) {
+            	p.log("\t" + entry.getKey());
+            	for (String j : entry.getValue()) {
+            		p.log("\t\t" + j);
+            	}
+            }
+            
         } catch (Exception e) {
             throw new BuildException("Failed to take inventory of " + archive, e);
         }

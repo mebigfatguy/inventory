@@ -21,7 +21,7 @@ import java.io.File;
 
 import org.apache.tools.ant.BuildEvent;
 import org.apache.tools.ant.Project;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class InventoryTaskTest {
 
