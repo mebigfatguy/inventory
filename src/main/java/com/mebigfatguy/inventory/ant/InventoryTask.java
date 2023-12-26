@@ -18,6 +18,8 @@
 package com.mebigfatguy.inventory.ant;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -29,6 +31,7 @@ import com.mebigfatguy.inventory.core.Inventory;
 public class InventoryTask extends Task {
 
     private File archive;
+    private Set<String> trackedPackages = new HashSet<>();
 
     public void setEar(File earFile) {
         archive = earFile;
@@ -36,6 +39,10 @@ public class InventoryTask extends Task {
 
     public void setWar(File warFile) {
         archive = warFile;
+    }
+    
+    public void addConfiguredTrackedPackage(TrackedPackage trackedPackage) {
+    	trackedPackages.add(trackedPackage.getPackageName());
     }
 
     @Override
