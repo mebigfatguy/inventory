@@ -32,6 +32,10 @@
  
 	<path id="inventory.reference.classpath">
         <pathelement location="${lib.dir}/javax.servlet-api-${javax.servlet-api.version}.jar"/>
+        <pathelement location="${lib.dir}/slf4j-api-${slf4j-api.version}.jar"/>
+        <pathelement location="${lib.dir}/log4j-api-${log4j-api.version}.jar"/>
+        <pathelement location="${lib.dir}/log4j-core-${log4j-core.version}.jar"/>
+        <pathelement location="${lib.dir}/log4j-slf4j-impl-${log4j-slf4j-impl.version}.jar"/>
 	</path>
 	
 	<path id="inventory.test.classpath">
@@ -104,6 +108,15 @@
 				<include name="**/*.xml" />
 			</fileset>
 		</copy>
+		<copy todir="${war.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}">
+				<include name="slf4j-api-${slf4j-api.version}.jar" />
+				<include name="log4j-api-${log4j-api.version}.jar" />
+			    <include name="log4j-core-${log4j-core.version}.jar" />
+				<include name="log4j-slf4j-impl-${log4j-slf4j-impl.version}.jar" />
+			</fileset>
+		</copy>
+
 		
 		<jar destfile="${target.dir}/sample.war">
 			<fileset dir="${war.dir}">
@@ -128,7 +141,7 @@
 		
 	</target>
 		
-	<target name="jar" depends="init,compile,compile-reference, compile-test, reference-ear" description="builds the jar file">
+	<target name="jar" depends="init,compile" description="builds the jar file">
 		<jar destfile="${target.dir}/inventory-${inventory.version}.jar">
 			<fileset dir="${classes.dir}">
 				<include name="**/*.class" />
@@ -168,6 +181,6 @@
 		</junitlauncher>
 	</target>
 	
-	<target name="complete" depends="jar, test"/>
+	<target name="complete" depends="jar, reference-war, reference-ear, test"/>
 
 </project>

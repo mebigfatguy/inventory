@@ -1,4 +1,5 @@
-/lib/
-/target/
+lib/
+target/
+reports/
 
 version.properties
