@@ -24,10 +24,12 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import com.mebigfatguy.inventory.core.Inventory;
+import com.mebigfatguy.inventory.core.InventoryEventFirer;
 
 public class ClassInventoryVisitor extends ClassVisitor {
 
     private Inventory inventory;
+    String clsName;
 
     public ClassInventoryVisitor(Inventory inventory) {
         super(Opcodes.ASM9);
@@ -36,13 +38,19 @@ public class ClassInventoryVisitor extends ClassVisitor {
 
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        inventory.getEventFirer().fireClassRecorded(name);
+    	clsName = name;
+    	InventoryEventFirer firer = inventory.getEventFirer();
+    	firer.fireClassRecorded(name);
+    	firer.fireClassUsed(superName, name);
+    	for (String inf : interfaces) {
+    		firer.fireClassUsed(inf, name);
+    	}
         super.visit(version, access, name, signature, superName, interfaces);
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-        return new MethodInventoryVisitor(name, inventory);
+        return new MethodInventoryVisitor(clsName, inventory);
     }
 
     @Override

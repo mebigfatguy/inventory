@@ -138,14 +138,18 @@ public class Inventory implements AutoCloseable {
         }
 
         @Override
-        public void classRecorded(String packageName) {
-            Set<String> packages = jarInventory.get(activeJar);
+        public void classRecorded(String clsName) {
+
+        	Set<String> packages = jarInventory.get(activeJar);
             if (packages == null) {
                 packages = new HashSet<>();
                 packagesUsed.put(activeJar, packages);
             }
 
-            packages.add(packageName);
+            int lastDotPos = clsName.lastIndexOf('.');
+            if (lastDotPos >= 0) {
+            	packages.add(clsName.substring(0, lastDotPos));
+            }
         }
 
         @Override

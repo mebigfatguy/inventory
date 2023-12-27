@@ -56,26 +56,26 @@ public class InventoryEventFirer {
 
     public void fireClassRecorded(String className) {
         for (InventoryEventListener listener : listeners) {
-            listener.classRecorded(className);
+            listener.classRecorded(className.replace('/',  '.'));
         }
     }
 
 
     public void fireClassUsed(String className, String byFile) {
         for (InventoryEventListener listener : listeners) {
-            listener.classUsed(className, byFile);
+            listener.classUsed(className.replace('/',  '.'), byFile);
         }
     }
     
-    public void fireMethodsed(String className, String methodName, String description, String byFile) {
+    public void fireMethodUsed(String className, String methodName, String description, String byFile) {
         for (InventoryEventListener listener : listeners) {
-            listener.methodUsed(className, methodName, description, byFile);
+            listener.methodUsed(className.replace('/',  '.'), methodName, description, byFile);
         }
     }
     
     public void fireMemberUsed(String className, String memberName, String byFile) {
         for (InventoryEventListener listener : listeners) {
-            listener.memberUsed(className, memberName, byFile);
+            listener.memberUsed(className.replace('/',  '.'), memberName, byFile);
         }
     }
 

@@ -24,6 +24,7 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import com.mebigfatguy.inventory.core.Inventory;
+import com.mebigfatguy.inventory.core.InventoryEventFirer;
 
 public class MethodInventoryVisitor extends MethodVisitor {
 
@@ -52,13 +53,9 @@ public class MethodInventoryVisitor extends MethodVisitor {
     @Override
 	public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
 		
-    	if (opcode == Opcodes.INVOKESTATIC) {
-    		inventory.getEventFirer().fireClassUsed(owner, owningClass);
-    	} else if (opcode == Opcodes.INVOKESPECIAL) {
-    		if ("<init>".equals(name)) {
-        		inventory.getEventFirer().fireClassUsed(owner, owningClass);
-    		}
-    	}
+    	InventoryEventFirer firer = inventory.getEventFirer();
+    	firer.fireClassUsed(owner, owningClass);
+    	firer.fireMethodUsed(owner, name, descriptor, owningClass);
 	}
 
 	@Override
