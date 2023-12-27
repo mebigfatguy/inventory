@@ -29,9 +29,11 @@ public interface InventoryEventListener {
 
     void classRecorded(String className);
 
-    void jarUsed(String jarName, String byFile);
-
     void classUsed(String className, String byFile);
+    
+    void methodUsed(String className, String methodName, String signature, String byFile);
+    
+    void memberUsed(String className, String memberName, String byFile);
 
     void failure(String info);
 

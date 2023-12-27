@@ -60,15 +60,22 @@ public class InventoryEventFirer {
         }
     }
 
-    public void fireJarUsed(String jarName, String byFile) {
-        for (InventoryEventListener listener : listeners) {
-            listener.jarUsed(jarName, byFile);
-        }
-    }
 
     public void fireClassUsed(String className, String byFile) {
         for (InventoryEventListener listener : listeners) {
             listener.classUsed(className, byFile);
+        }
+    }
+    
+    public void fireMethodsed(String className, String methodName, String description, String byFile) {
+        for (InventoryEventListener listener : listeners) {
+            listener.methodUsed(className, methodName, description, byFile);
+        }
+    }
+    
+    public void fireMemberUsed(String className, String memberName, String byFile) {
+        for (InventoryEventListener listener : listeners) {
+            listener.memberUsed(className, memberName, byFile);
         }
     }
 

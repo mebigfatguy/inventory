@@ -58,16 +58,23 @@ public class AntEventLogger implements InventoryEventListener {
     }
 
     @Override
-    public void jarUsed(String jarName, String byFile) {
-        project.log(jarName + "jar used by: " + byFile);
-    }
-
-    @Override
     public void classUsed(String className, String byFile) {
         project.log(className + " class used by: " + byFile);
     }
+    
+    
 
     @Override
+	public void methodUsed(String className, String methodName, String signature, String byFile) {
+        project.log("Method" + className + "." + methodName + " used by: " + byFile);	
+	}
+
+	@Override
+	public void memberUsed(String className, String memberName, String byFile) {
+        project.log("Member" + className + "." + memberName + " used by: " + byFile);	
+	}
+
+	@Override
     public void failure(String info) {
         project.log("ERROR: " + info, Project.MSG_ERR);
     }

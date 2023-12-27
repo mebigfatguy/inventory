@@ -149,10 +149,6 @@ public class Inventory implements AutoCloseable {
         }
 
         @Override
-        public void jarUsed(String jarName, String byFile) {
-        }
-
-        @Override
         public void classUsed(String packageName, String byFile) {
             Set<String> packages = packagesUsed.get(byFile);
             if (packages == null) {
@@ -162,8 +158,16 @@ public class Inventory implements AutoCloseable {
 
             packages.add(packageName);
         }
-
+        
         @Override
+		public void methodUsed(String className, String methodName, String signature, String byFile) {
+		}
+
+		@Override
+		public void memberUsed(String className, String memberName, String byFile) {
+		}
+
+		@Override
         public void failure(String info) {
         }
         
