@@ -115,6 +115,8 @@ public class Inventory implements AutoCloseable {
 
         private Map<String, Set<String>> jarInventory = new HashMap<>();
         private Map<String, Set<String>> packagesUsed = new HashMap<>();
+        private Map<String, Set<MethodDesc>> methodsUsed = new HashMap<>();
+        private Map<String, Set<MemberDesc>> membersUsed = new HashMap<>();
 
         @Override
         public void scanningWar(String warName, ScanStatus status) {
@@ -165,10 +167,24 @@ public class Inventory implements AutoCloseable {
         
         @Override
 		public void methodUsed(String className, String methodName, String signature, String byFile) {
+        	Set<MethodDesc> methods = methodsUsed.get(byFile);
+            if (methods == null) {
+            	methods = new HashSet<>();
+            	methodsUsed.put(byFile, methods);
+            }
+
+            methods.add(new MethodDesc(className, methodName, signature));
 		}
 
 		@Override
 		public void memberUsed(String className, String memberName, String byFile) {
+        	Set<MemberDesc> members = membersUsed.get(byFile);
+            if (members == null) {
+            	members = new HashSet<>();
+            	membersUsed.put(byFile, members);
+            }
+
+            members.add(new MemberDesc(className, memberName));
 		}
 
 		@Override
@@ -182,5 +198,17 @@ public class Inventory implements AutoCloseable {
         public Map<String, Set<String>> getPackagedUsed() {
         	return packagesUsed;
         }
+
+		@Override
+		public Map<String, Set<MethodDesc>> getMethodsUsed() {
+			return methodsUsed;
+		}
+
+		@Override
+		public Map<String, Set<MemberDesc>> getMembersUsed() {
+			return membersUsed;
+		}
+        
+        
     }
 }
