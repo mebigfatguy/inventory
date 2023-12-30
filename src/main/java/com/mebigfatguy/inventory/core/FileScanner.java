@@ -30,21 +30,30 @@ public class FileScanner implements ArchiveScanner {
 
             ArchiveScanner scanner;
             switch (extension) {
-                case "class":
+                case "class": {
                     scanner = new ClassScanner();
+                }
                 break;
 
-                case "xml":
+                case "xml": {
+                    int lastSlashPos = name.lastIndexOf("/");
+            		String fName = lastSlashPos >= 0 ? name.substring(lastSlashPos+1) : name;
+                	if ("pom.xml".equals(fName)) {
+                		return;
+                	}
                     scanner = new XMLScanner();
+                }
                 break;
                 
-                case "properties":
-                	String parent = name.substring(0, name.lastIndexOf("/"));
+                case "properties": {
+                    int lastSlashPos = name.lastIndexOf("/");
+                    String parent = lastSlashPos >= 0 ? name.substring(0, lastSlashPos) : "";
                 	if (!parent.endsWith("META-INF/services")) {
                 		return;
                 	}
                 	
                		scanner = new PropertiesScanner();
+                }
                 break;
 
                 default:

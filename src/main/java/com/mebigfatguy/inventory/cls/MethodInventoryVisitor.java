@@ -19,6 +19,8 @@ package com.mebigfatguy.inventory.cls;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -56,6 +58,41 @@ public class MethodInventoryVisitor extends MethodVisitor {
     	InventoryEventFirer firer = inventory.getEventFirer();
     	firer.fireClassUsed(owner, owningClass);
     	firer.fireMethodUsed(owner, name, descriptor, owningClass);
+	}
+
+	@Override
+	public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
+    	InventoryEventFirer firer = inventory.getEventFirer();
+    	firer.fireClassUsed(owner, owningClass);
+    	firer.fireMemberUsed(owner, name, owningClass);
+	}
+	
+	
+
+	@Override
+	public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+    	InventoryEventFirer firer = inventory.getEventFirer();
+    	firer.fireClassUsed(descriptor, owningClass);
+    	return null;
+	}
+
+	@Override
+	public void visitLocalVariable(String name, String descriptor, String signature, Label start, Label end,
+			int index) {
+    	InventoryEventFirer firer = inventory.getEventFirer();
+    	firer.fireClassUsed(descriptor, owningClass);
+	}
+
+	@Override
+	public void visitParameter(String name, int access) {
+    	InventoryEventFirer firer = inventory.getEventFirer();
+    	firer.fireClassUsed(name, owningClass);
+	}
+
+	@Override
+	public void visitTypeInsn(int opcode, String type) {
+    	InventoryEventFirer firer = inventory.getEventFirer();
+    	firer.fireClassUsed(type, owningClass);
 	}
 
 	@Override
